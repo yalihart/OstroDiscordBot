@@ -9,8 +9,6 @@ const {
 
 require("dotenv").config();
 
-//TODO: Add ticket archives to a closed ticket category.
-
 async function createTicket(interaction) {
   const row = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
@@ -108,8 +106,6 @@ async function createTicket(interaction) {
 }
 
 async function archiveTicket(interaction) {
-  //TODO: Add ticket archives to a closed ticket category. & remove user permissions from the ticket channel.
-  // Get the first message sent in the channel
   const channel = interaction.channel;
   const row = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
