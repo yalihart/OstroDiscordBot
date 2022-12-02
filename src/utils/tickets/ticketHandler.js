@@ -36,9 +36,10 @@ async function createTicket(interaction) {
 
   const ticketCategory = guild.channels.cache.get(TICKET_CATEGORY_ID);
 
-  // In Discord.js v14 Check if the channel exists before creating it
-  const channelExists = guild.channels.cache.find((channel) =>
-    channel.name.toLowerCase().includes(TICKET_CHANNEL_NAME.toLowerCase())
+  const channelExists = guild.channels.cache.find(
+    (channel) =>
+      channel.name.toLowerCase().includes(TICKET_CHANNEL_NAME.toLowerCase()) &&
+      channel.parentId == TICKET_CATEGORY_ID
   );
   if (channelExists) {
     return interaction.reply({
@@ -106,11 +107,57 @@ async function createTicket(interaction) {
     });
 }
 
-function deleteTicket(interaction) {
-  const guild = interaction.guild;
+async function archiveTicket(interaction) {
+  //TODO: Add ticket archives to a closed ticket category. & remove user permissions from the ticket channel.
+  // Get the first message sent in the channel
   const channel = interaction.channel;
+  const row = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId("deleteArchive")
+      .setLabel("Delete Archived Ticket 🗑️")
+      .setStyle(ButtonStyle.Danger)
+  );
+  const updateEmbed = new EmbedBuilder()
+    .setTitle("Archived Ticket  🎫 | Archived By " + interaction.user.username)
+    .setDescription(
+      "This ticket has been archived. Click below to delete the archived ticket."
+    )
+    .setColor(0xb711fa);
+  channel.messages.fetch().then((messages) => {
+    const firstMessage = messages.first();
+    firstMessage.edit({ embeds: [updateEmbed], components: [row] });
+  });
 
+  const guild = interaction.guild;
+  const channelName = channel.name;
+  const embed = new EmbedBuilder()
+    .setTitle("Ticket Archived  🎫 |  By " + interaction.user.username)
+    .setDescription(
+      "This ticket has been closed. If you need to reopen it, please create a new ticket."
+    )
+    .setColor(0xb711fa);
+
+  const existingChannel = await guild.channels.cache.find(
+    (channel) => channel.name === channelName
+  );
+
+  channel.send({ embeds: [embed] }).then(() => {
+    if (
+      existingChannel &&
+      existingChannel.parentId == process.env.ARCHIVE_CATAGORY_ID
+    ) {
+      existingChannel.delete();
+    }
+    interaction.deferUpdate();
+    const oldTopic = channel.topic;
+    channel.setTopic("Ticket Closed - " + oldTopic);
+    channel.setParent(process.env.ARCHIVE_CATAGORY_ID);
+  });
+}
+
+function deleteArchive(interaction) {
+  const channel = interaction.channel;
   channel.delete();
 }
 
-module.exports = { createTicket, deleteTicket };
+module.exports = { createTicket, archiveTicket, deleteArchive };

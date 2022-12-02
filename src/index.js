@@ -9,7 +9,11 @@ const {
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const fs = require("fs");
-const { createTicket, deleteTicket } = require("./utils/tickets/ticketHandler");
+const {
+  createTicket,
+  archiveTicket,
+  deleteArchive,
+} = require("./utils/tickets/ticketHandler");
 require("dotenv").config();
 
 // Create a new client instance
@@ -74,7 +78,9 @@ client.on(Events.InteractionCreate, (interaction) => {
   if (interaction.customId === "createTicket") {
     createTicket(interaction);
   } else if (interaction.customId === "closeTicket") {
-    deleteTicket(interaction);
+    archiveTicket(interaction);
+  } else if (interaction.customId === "deleteArchive") {
+    deleteArchive(interaction);
   }
 });
 

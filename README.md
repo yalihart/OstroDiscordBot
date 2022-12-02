@@ -10,7 +10,7 @@ MORE TBD...
 
 ## Systems
 
- - [ ] Support Ticket System
+ - [X] Basic Support Ticket System (Buttons) TODO: Add ticket commands (/ticket close) etc...
  - [ ] Automatic Student Verification 
  - [ ] Music Playing System
  - [ ] Reporting System
