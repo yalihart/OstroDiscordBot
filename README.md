@@ -18,7 +18,7 @@ MORE TBD...
  MORE TBD...
 
 ##  Open AI
-#### Some of Open AI's api's that may be worth incorperating: 
+#### Some of Open AI's api's that may be worth incorporating:  
 
  - [Summarize for a 2nd grader](https://beta.openai.com/examples/default-summarize)
  - [Calculate Time Complexity](https://beta.openai.com/examples/default-time-complexity)

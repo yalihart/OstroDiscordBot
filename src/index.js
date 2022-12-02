@@ -4,10 +4,12 @@ const {
   GatewayIntentBits,
   ActivityType,
   Collection,
+  Events,
 } = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const fs = require("fs");
+const { createTicket, deleteTicket } = require("./utils/tickets/ticketHandler");
 require("dotenv").config();
 
 // Create a new client instance
@@ -65,6 +67,15 @@ client.once("ready", () => {
       if (error) console.error(error);
     }
   })();
+});
+
+client.on(Events.InteractionCreate, (interaction) => {
+  if (!interaction.isButton()) return;
+  if (interaction.customId === "createTicket") {
+    createTicket(interaction);
+  } else if (interaction.customId === "closeTicket") {
+    deleteTicket(interaction);
+  }
 });
 
 client.on("interactionCreate", async (interaction) => {
