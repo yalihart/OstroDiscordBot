@@ -19,6 +19,7 @@ require("dotenv").config();
 // Create a new client instance
 const client = new Client({
   intents: [
+    GatewayIntentBits.GuildMembers,
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildVoiceStates,
@@ -89,7 +90,7 @@ client.on(Events.GuildMemberAdd, async (member) => {
   const channel = member.guild.channels.cache.get("1050120323976155187");
   if (!channel) return;
   channel.send(
-    `Welcome to the server, ${member}! Please read the <#1047849789951320074>!`
+    `Welcome to the server, ${member}! Please read the <#1047849789951320074>! For verification please go to <#1050123362074112110>! `
   );
 });
 
