@@ -84,6 +84,15 @@ client.on(Events.InteractionCreate, (interaction) => {
   }
 });
 
+//NOTE: This is untested
+client.on(Events.GuildMemberAdd, async (member) => {
+  const channel = member.guild.channels.cache.get("1050120323976155187");
+  if (!channel) return;
+  channel.send(
+    `Welcome to the server, ${member}! Please read the <#1047849789951320074>!`
+  );
+});
+
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
 
