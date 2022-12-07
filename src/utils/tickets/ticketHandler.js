@@ -119,10 +119,11 @@ async function archiveTicket(interaction) {
       "This ticket has been archived. Click below to delete the archived ticket."
     )
     .setColor(0xb711fa);
-  channel.messages.fetch().then((messages) => {
-    const firstMessage = messages.first();
-    firstMessage.edit({ embeds: [updateEmbed], components: [row] });
-  });
+  const firstMessage = channel.messages
+    .fetch({ limit: 1, after: 0 })
+    .then((messages) => {
+      messages.first().edit({ embeds: [updateEmbed], components: [row] });
+    });
 
   const guild = interaction.guild;
   const channelName = channel.name;
